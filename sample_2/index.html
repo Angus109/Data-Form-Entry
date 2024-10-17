@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Form Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+        }
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Student Data Form Entry</h1>
+        <form id="form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="FName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="LName" name="lastName" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="DOB" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Department</label>
+                <select id="Dept" name="department" required>
+                    <option value="">Select a department</option>
+                    <option value="hr">Human Resources</option>
+                    <option value="it">Information Technology</option>
+                    <option value="finance">Finance</option>
+                    <option value="marketing">Marketing</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="level">Level</label>
+                <select id="Level" name="level" required>
+                    <option value="">Select a level</option>
+                    <option value="entry">Entry</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="senior">Senior</option>
+                    <option value="manager">Manager</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="Email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="gender" value="male" id="Gender" required> Male
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female" id="Gender"> Female
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="other" id="Gender"> Other
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="Age" name="age" min="18" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="regNumber">Registration Number</label>
+                <input type="text" id="Reg" name="regNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea id="Comment" name="comment"></textarea>
+            </div>
+            <button type="submit" id="submit-button">Submit Registration</button>
+        </form>
+    </div>
+
+    <div id="message" style="
+        display: none;
+        margin: 20px;
+        font-weight: bold;
+        color: green;
+        padding: 8px;
+        background-color: beige;
+        border-radius: 4px;
+        border-color: aquamarine;
+      "></div>
+
+  <script>
+    document.getElementById("form").addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent the default form submission
+      document.getElementById("message").textContent = "Submitting..";
+      document.getElementById("message").style.display = "block";
+      document.getElementById("submit-button").disabled = true;
+
+
+      //       {
+      //        "stingObject":{
+      //         "FName":  "user",
+      //         "LName":  "user@lastnmae",
+      //         "Email":  "user@gmail",
+      //         "Dept": "csc",
+      //         "Level": "300",
+      //         "Reg": "397634567",
+      //         "DOB": "309846",
+      //         "Age": "35",
+      //         "Gender": "male",
+      //         "Comment":  "comment"
+      //        },
+      //        "formDataString": "FName=user&LName=user@lastnmae&Email=user@gmail&Dept=csc&Level=300&Reg=39763456&DOB=20040806Age=35&Gender=male&Comment=comment"
+
+      // }
+
+
+      var formData = new FormData(this);
+      var keyValuePairs = [];
+      for (var pair of formData.entries()) {
+        keyValuePairs.push(pair[0] + "=" + pair[1]);
+      }
+
+      const formDataString = keyValuePairs.join("&");
+      console.log(formDataString)
+
+
+
+      const formDataObject = {
+        FName: document.getElementById("FName").value || "",
+        LName: document.getElementById("LName").value || "",
+        Email: document.getElementById("Email").value || "",
+        Dept: document.getElementById("Dept").value || "",
+        Level: document.getElementById("Level").value || "",
+        Reg: document.getElementById("Reg").value || "",
+        DOB: document.getElementById("DOB").value || "",
+        Age: document.getElementById("Age").value || "",
+        Gender: document.getElementById("Gender").value || "",
+        Comment: document.getElementById("Comment").value || ""
+
+
+      }
+
+      console.log(formDataObject)
+
+
+
+
+
+
+      // Send a POST request to your Google Apps Script
+      fetch(
+        "https://form-api-eoe8.onrender.com/form",
+        {
+          redirect: "follow",
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ formDataString, formDataObject }),
+          credentials: 'include'
+        }
+      )
+
+        .then(function (response) {
+          // Check if the request was successful
+          if (response) {
+            return response; // Assuming your script returns JSON response
+          } else {
+            throw new Error("Failed to submit the form.");
+          }
+        })
+        .then(function (data) {
+          // Display a success message
+          document.getElementById("message").textContent =
+            "Data submitted successfully!";
+          document.getElementById("message").style.display = "block";
+          document.getElementById("message").style.backgroundColor = "green";
+          document.getElementById("message").style.color = "beige";
+          document.getElementById("submit-button").disabled = false;
+          document.getElementById("form").reset();
+
+          setTimeout(function () {
+            document.getElementById("message").textContent = "";
+            document.getElementById("message").style.display = "none";
+          }, 2600);
+        })
+        .catch(function (error) {
+          // Handle errors, you can display an error message here
+          console.error(error);
+          document.getElementById("message").textContent =
+            "An error occurred while submitting the form.";
+          document.getElementById("message").style.display = "block";
+        });
+    });
+  </script>
+
+</body>
+</html>

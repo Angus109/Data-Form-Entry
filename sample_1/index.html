@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+</head>
+
+<body>
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">Data Entry Form</h1>
+      </div>
+    </div>
+  </section>
+  <form id="form" class="container m-4 pl-4" method="POST" name="google-sheet">
+    <div class="field">
+      <label class="label">First Name</label>
+      <div class="control">
+        <input class="input" type="text" id="FName" placeholder="Your Client Name" name="FName" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Last Name</label>
+      <div class="control">
+        <input class="input" type="text" id="LName" placeholder="Your Last Name" name="LName" />
+      </div>
+    </div>
+
+
+
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control">
+        <input class="input" type="email" id="Email" placeholder="Your Email" name="Email" />
+      </div>
+    </div>
+
+    <!-- <div class="field">
+        <label class="label">university</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            placeholder="Your university"
+            name="School"
+          />
+        </div>
+      </div> -->
+
+    <div class="field">
+      <label class="label">Department</label>
+      <div class="control">
+        <input class="input" type="text" id="Dept" placeholder="Your Department" name="Dept" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Level</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Your Level" id="Level" name="Level" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">REG</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Your REG" id="Reg" name="Reg" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Your Age</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Your Age" id="Age" name="Age" />
+      </div>
+    </div>
+
+
+
+    <div class="field">
+      <label class="label">Date of Birth</label>
+      <div class="control">
+        <input class="input" type="date" id="DOB" placeholder="Your Date of Birth" name="DOB" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Gender</label>
+      <div class="control">
+        <label class="radio">
+          <input type="radio" id="Gender" name="Gender" value="male" /> Male
+        </label>
+        <label class="radio">
+          <input type="radio" id="Gender" name="Gender" value="female" /> Female
+        </label>
+      </div>
+    </div>
+
+    <!-- <div class="field">
+        <label class="label">Agree to Terms</label>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="Agree To Terms" value="yes" /> I agree
+            to the terms and conditions
+          </label>
+        </div>
+      </div> -->
+
+    <div class="field">
+      <label class="label">Additional Information</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Any additional information" id="Comment" name="Comment"></textarea>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary" type="submit" id="submit-button">
+          Submit
+        </button>
+      </div>
+      <div class="control">
+        <button class="button is-danger">Cancel</button>
+      </div>
+    </div>
+  </form>
+  <div id="message" style="
+        display: none;
+        margin: 20px;
+        font-weight: bold;
+        color: green;
+        padding: 8px;
+        background-color: beige;
+        border-radius: 4px;
+        border-color: aquamarine;
+      "></div>
+
+  <script>
+    document.getElementById("form").addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent the default form submission
+      document.getElementById("message").textContent = "Submitting..";
+      document.getElementById("message").style.display = "block";
+      document.getElementById("submit-button").disabled = true;
+
+
+      //       {
+      //        "stingObject":{
+      //         "FName":  "user",
+      //         "LName":  "user@lastnmae",
+      //         "Email":  "user@gmail",
+      //         "Dept": "csc",
+      //         "Level": "300",
+      //         "Reg": "397634567",
+      //         "DOB": "309846",
+      //         "Age": "35",
+      //         "Gender": "male",
+      //         "Comment":  "comment"
+      //        },
+      //        "formDataString": "FName=user&LName=user@lastnmae&Email=user@gmail&Dept=csc&Level=300&Reg=39763456&DOB=20040806Age=35&Gender=male&Comment=comment"
+
+      // }
+
+
+      var formData = new FormData(this);
+      var keyValuePairs = [];
+      for (var pair of formData.entries()) {
+        keyValuePairs.push(pair[0] + "=" + pair[1]);
+      }
+
+      const formDataString = keyValuePairs.join("&");
+      console.log(formDataString)
+
+
+
+      const formDataObject = {
+        FName: document.getElementById("FName").value || "",
+        LName: document.getElementById("LName").value || "",
+        Email: document.getElementById("Email").value || "",
+        Dept: document.getElementById("Dept").value || "",
+        Level: document.getElementById("Level").value || "",
+        Reg: document.getElementById("Reg").value || "",
+        DOB: document.getElementById("DOB").value || "",
+        Age: document.getElementById("Age").value || "",
+        Gender: document.getElementById("Gender").value || "",
+        Comment: document.getElementById("Comment").value || ""
+
+
+      }
+
+      console.log(formDataObject)
+
+
+
+
+
+
+      // Send a POST request to your Google Apps Script
+      fetch(
+        "https://form-api-eoe8.onrender.com/form",
+        {
+          redirect: "follow",
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ formDataString, formDataObject }),
+          credentials: 'include'
+        }
+      )
+
+        .then(function (response) {
+          // Check if the request was successful
+          if (response) {
+            return response; // Assuming your script returns JSON response
+          } else {
+            throw new Error("Failed to submit the form.");
+          }
+        })
+        .then(function (data) {
+          // Display a success message
+          document.getElementById("message").textContent =
+            "Data submitted successfully!";
+          document.getElementById("message").style.display = "block";
+          document.getElementById("message").style.backgroundColor = "green";
+          document.getElementById("message").style.color = "beige";
+          document.getElementById("submit-button").disabled = false;
+          document.getElementById("form").reset();
+
+          setTimeout(function () {
+            document.getElementById("message").textContent = "";
+            document.getElementById("message").style.display = "none";
+          }, 2600);
+        })
+        .catch(function (error) {
+          // Handle errors, you can display an error message here
+          console.error(error);
+          document.getElementById("message").textContent =
+            "An error occurred while submitting the form.";
+          document.getElementById("message").style.display = "block";
+        });
+    });
+  </script>
+</body>
+
+</html>
